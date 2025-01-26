@@ -1,0 +1,38 @@
+### STANDARD JAVA FILES ###
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+### COURSE FILES ###
+
+# System files
+.DS_Store
+
+# Render files
+*.pdf
+*tmp.html
+
+# Folders that will not be committed to the repo, even if private
+bin/*
