@@ -98,7 +98,7 @@ Below is further rationale/explanation for the rubric items above:
 > brainstorming. Plus it helps us get to know you better! Feel free to share
 > images in this section.
 
-Can't exactly tell a lot here because I have no idea what to talk about, so just add my Discord @machinewjq6657 and ask anything!
+Can't exactly tell a lot here because I have no idea what to talk about, but I can talk about myself in person on Discord if I have an idea!
 
 ## Assignment
 
@@ -117,8 +117,6 @@ etc. Make of this whatever seems interesting to you, and keep in mind that
 you're just brainstorming right now. You do not have to commit to anything.
 
 ### Example Component
-
-<!-- TODO: review this example component then delete this comment -->
 
 To help you brainstorm a few components, we've provided an example below of a
 component you already know well: NaturalNumber. We highly recommend that you
@@ -186,68 +184,103 @@ will likely refine your design to make your implementation easier to use.
 
 > Please use this section to share your designs.
 
-- Component Design #1: <!-- TODO: give component a name then delete this comment -->
+- Component Design #1: Stock Portfolio Tracker
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - This component can track the user's investment. It will tell the users what stocks they have bought, its average price, its amount of shares, etc. This component will effectively help the users better plan their investments.
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - `void bought(double shares, double price, Stock stock)`: adds `shares` shares of `stock` with the price per share of `price` into the account if not existed, or adds to the account `this` of current `stock`.
+    - `double sold(double shares, Stock stock)`: removes `shares` of `stock` and return the value of `stock` sold. If all of `stock` is sold it will be removed from the account `this`.
+    - `void sellShort(double shares, double price, Stock stock)`: sells short of `stock` with the price per share of `price` and the amount of shares `shares`. It will be shown as a negative amount in the portfolio.
+    - `boolean isInPortfolio(Stock stock)`: returns if `stock` is in `this`. (It can be both the name and the symbol being inputted.)
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
-    - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
-      Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component need any enums or constants (e.g.,
-      `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Can you implement your secondary methods using your kernel methods?
-      Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+    - `double value(Stock stock)`: returns the total value of `stock`.
+    - `double averageCost(Stock stock)`: returns the average cost of `stock`.
+    - `double totalGainLoss(Stock stock)`: returns the total gain or loss of `stock`.
+    - `String name(Stock stock)`: returns the complete name of `stock`.
+    - `String symbol(Stock stock)`: returns the symbol name of `stock`.
+    - `List<Double> actions(Stock stock):` returns all actions of `stock`, the elements in the returned List represent the actions of bought or sold of `stock`.
+    - `double totalValue()`: returns the total value of current portfolio of `this`.
+    - `double totalGainLoss()`: returns the total gain or loss of current portfolio of `this`.
+    - `Map<String, Pair<Double, Double>> portfolio()`: returns the current portfolio of `this`. Shows the name of the stock, the amount of shares owned, and the total value of the stock.
 
-- Component Design #2: <!-- TODO: give component a name then delete this comment -->
-  - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
-  - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
-  - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. Stocks are always changing.
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. It will rely on an internal class `Stock`, which stores the basic information of each stock, such as name, symbol, average price, etc.
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - I have currently no plan to add enums or constants.
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. The secondary methods should rely on kernel methods like `bought`, `sold` to determine the current portfolio value, and list the action list. For example, the secondary method `actions` rely on actions of kernel methods `bought`, `sold`, and `sellShort`.
 
-- Component Design #3: <!-- TODO: give component a name then delete this comment -->
+- Component Design #2: Music Playlist
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - This component can record a music list. The users can see what songs are in the playlist and operate with it, such as adding songs, removing songs, access information of the song, sort the playlist, etc.
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - `void add(Song song)`: adds Song `song` to the playlist.
+    - `Song remove(Song song)`: removes Song `song` from the playlist (and returns nothing).
+    - `int size()`: returns the amount of songs in the playlist.
+    - `void isInPlayList(Song song)`: returns if `song` is in `this`.
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
+    - `Song getSongInfo(Song song)`: returns the Song object of `song` from `this`.
+    - `String singer(Song song)`: returns the author of `song`.
+    - `String album(Song song)`: returns the album of `song`.
+    - `int length(Song song)`: returns the time length in second of `song`.
+    - `int listLength()`: returns the length of current list `this`.
+    - `List<Song> sortList()`: sorts and returns the current playlist `this` based on song names in alphabetical order.
+    - `List<Song> showList()`: returns the playlist `this` in song names.
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. We need to operate with the playlist.
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. We will use the internal class `Song` to store the basic information of each song such as singer, album, etc.
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - It does not need any enums or constants.
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. For example, I will need the `isInPlayList` method to check if `song` is already in `this` so that I can use the secondary methods `author`, `album`, etc.
+
+- Component Design #3: Graph
+  - **Description**:
+    - This component represents a graph. It includes vertices and edges and supports operations on these elements. Additionally, it will provide the tool to iterate vertices, search for the shortest path, etc. The component supports both directed and undirected graphs, but does not support negative edge weight graphs.
+  - **Kernel Methods**:
+    - `void addVertex(Vertex vertex)`: adds the vertex `vertex` to `this`.
+    - `void addEdge(Vertex from, Vertex to, int weight)`: adds the edge from the vertex `from` to the vertex `to` with a weight `weight`.
+    - `void removeVertex(Vertex vertex)`: removes the vertex `vertex` from `this`. Also removes every edge that is connected to `vertex`.
+    - `void removeEdge(Vertex from, Vertex to)`: removes the edge from `from` to `to`.
+    - `boolean hasVertex(Vertex vertex)`: returns if the vertex `vertex` exists in the graph `this`.
+    - `boolean hasEdge(Vertex from, Vertex to)`: returns if there exists an edge from `from` to `to`.
+    - `List<Vertex> neighbors(Vertex vertex)`: returns all neighbors connected with an edge of `vertex`.
+    - `int getWeight(Vertex from, Vertex to)`: returns the weight of the edge from `from` to `to`. If there is no edge between these two vertices, it will return -1.
+  - **Secondary Methods**:
+    - `List<Vertex> bfs(Vertex start)`: returns the order of breadth-first search of the graph from `start`.
+    - `List<Vertex> dfs(Vertex start)`: returns the order of depth-first search of the graph from `start`.
+    - `List<Vertex> shortestPath(Vertex start, Vertex end)`: returns the shortest order of the path from `start` to `end` using Djikstra algorithm.
+    - `boolean isConnected()`: returns if the graph is connected.
+    - `boolean isDirected()`: returns if the graph is a direct graph.
+    - `List<List<Vertex>> connectedComponents()`: returns all connected components. Only supports undirected graphs.
+    - `boolean isCyclic()`: returns if the graph is cyclic.
+    - `List<Edge> MST()`: returns the minimum spanning tree (MST) using Kruskal's algorithm.
+  - **Additional Considerations** (*note*: "I don't know" is an acceptable
+    answer for each of the following questions):
+    - Would this component be mutable? Answer and explain:
+      - Yes. We want to operate with the graph.
+    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
+      Answer and explain:
+      - Yes. We will use the internal classes `Vertex` and `Edge` to store the data of each vertex and edge. For example, we can add tags to each `Vertex` to better identify different vertices. We will also need to record the two vertices between which each `Edge` connects.
+    - Would this component need any enums or constants (e.g.,
+      `Program.Instruction`)? Answer and explain:
+      - We may need to store the type of the graph `DIRECTED` or `UNDIRECTED`.
+    - Can you implement your secondary methods using your kernel methods?
+      Answer, explain, and give at least one example:
+      - Yes. For example, we can use `neighbors` method to implement `bfs` or `dfs` so that the two search methods can finish the search quickly by visiting the neighbors of different vertices.
 
 ## Post-Assignment
 
@@ -335,8 +368,6 @@ PDF to read this rubric as a table).
 If you'd like to give feedback for this assignment (or any assignment, really),
 make use of [this survey][survey]. Your feedback helps make assignments
 better for future students.
-
-<!-- TODO: follow the link to share your feedback then delete this comment -->
 
 [example-components]: https://therenegadecoder.com/code/the-never-ending-list-of-small-programming-project-ideas/
 [markdown-to-pdf-guide]: https://therenegadecoder.com/blog/how-to-convert-markdown-to-a-pdf-3-quick-solutions/
