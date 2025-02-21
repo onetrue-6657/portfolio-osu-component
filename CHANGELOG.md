@@ -16,4 +16,15 @@ the following form: YYYY.0M.0D.
 - Designed a Music Playlist component
 - Designed a Graph component
 
+## [2025.02.20]
+
+### Added
+
+- Designed a proof of concept for `Graph` component
+
+### Updated
+
+- Changed design to exclude some secondary methods for the `Graph`
+- Adjusted the design of the components
+
 [unreleased]: https://github.com/onetrue-6657/portfolio-osu-component

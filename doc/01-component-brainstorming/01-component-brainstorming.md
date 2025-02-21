@@ -108,8 +108,6 @@ that may help you in your brainstorming. All of these components were made at
 some point by one of your peers, so you should feel confident that you can
 accomplish any of them.
 
-<!-- TODO: browse the list of possible projects then delete this comment -->
-
 There is no requirement that you use any of the components listed above.
 If you want to model something else, go for it! Very common early object
 projects usually attempt to model real-world systems like banks, cars,
@@ -188,17 +186,17 @@ will likely refine your design to make your implementation easier to use.
   - **Description**:
     - This component can track the user's investment. It will tell the users what stocks they have bought, its average price, its amount of shares, etc. This component will effectively help the users better plan their investments.
   - **Kernel Methods**:
-    - `void bought(double shares, double price, Stock stock)`: adds `shares` shares of `stock` with the price per share of `price` into the account if not existed, or adds to the account `this` of current `stock`.
-    - `double sold(double shares, Stock stock)`: removes `shares` of `stock` and return the value of `stock` sold. If all of `stock` is sold it will be removed from the account `this`.
-    - `void sellShort(double shares, double price, Stock stock)`: sells short of `stock` with the price per share of `price` and the amount of shares `shares`. It will be shown as a negative amount in the portfolio.
-    - `boolean isInPortfolio(Stock stock)`: returns if `stock` is in `this`. (It can be both the name and the symbol being inputted.)
+    - `void bought(double shares, double price, String stock)`: adds `shares` shares of `stock` with the price per share of `price` into the account if not existed, or adds to the account `this` of current `stock`.
+    - `double sold(double shares, String stock)`: removes `shares` of `stock` and return the value of `stock` sold. If all of `stock` is sold it will be removed from the account `this`.
+    - `void sellShort(double shares, double price, String stock)`: sells short of `stock` with the price per share of `price` and the amount of shares `shares`. It will be shown as a negative amount in the portfolio.
+    - `boolean isInPortfolio(String stock)`: returns if `stock` is in `this`. (It can be both the name and the symbol being inputted.)
+    - `String name(String stock)`: returns the complete name of `stock`.
+    - `String symbol(String stock)`: returns the symbol name of `stock`.
   - **Secondary Methods**:
-    - `double value(Stock stock)`: returns the total value of `stock`.
-    - `double averageCost(Stock stock)`: returns the average cost of `stock`.
-    - `double totalGainLoss(Stock stock)`: returns the total gain or loss of `stock`.
-    - `String name(Stock stock)`: returns the complete name of `stock`.
-    - `String symbol(Stock stock)`: returns the symbol name of `stock`.
-    - `List<Double> actions(Stock stock):` returns all actions of `stock`, the elements in the returned List represent the actions of bought or sold of `stock`.
+    - `double value(String stock)`: returns the total value of `stock`.
+    - `double averageCost(String stock)`: returns the average cost of `stock`.
+    - `double totalGainLoss(String stock)`: returns the total gain or loss of `stock`.
+    - `List<Double> actions(String stock):` returns all actions of `stock`, the elements in the returned List represent the actions of bought or sold of `stock`.
     - `double totalValue()`: returns the total value of current portfolio of `this`.
     - `double totalGainLoss()`: returns the total gain or loss of current portfolio of `this`.
     - `Map<String, Pair<Double, Double>> portfolio()`: returns the current portfolio of `this`. Shows the name of the stock, the amount of shares owned, and the total value of the stock.
@@ -221,15 +219,15 @@ will likely refine your design to make your implementation easier to use.
   - **Description**:
     - This component can record a music list. The users can see what songs are in the playlist and operate with it, such as adding songs, removing songs, access information of the song, sort the playlist, etc.
   - **Kernel Methods**:
-    - `void add(Song song)`: adds Song `song` to the playlist.
-    - `Song remove(Song song)`: removes Song `song` from the playlist (and returns nothing).
+    - `void add(String song)`: adds Song `song` to the playlist.
+    - `Song remove(String song)`: removes Song `song` from the playlist (and returns nothing).
     - `int size()`: returns the amount of songs in the playlist.
-    - `void isInPlayList(Song song)`: returns if `song` is in `this`.
+    - `void isInPlayList(String song)`: returns if `song` is in `this`.
+    - `String singer(String song)`: returns the author of `song`.
+    - `String album(String song)`: returns the album of `song`.
+    - `Song getSongInfo(String song)`: returns the Song object of `song` from `this`.
+    - `int length(String song)`: returns the time length in second of `song`.
   - **Secondary Methods**:
-    - `Song getSongInfo(Song song)`: returns the Song object of `song` from `this`.
-    - `String singer(Song song)`: returns the author of `song`.
-    - `String album(Song song)`: returns the album of `song`.
-    - `int length(Song song)`: returns the time length in second of `song`.
     - `int listLength()`: returns the length of current list `this`.
     - `List<Song> sortList()`: sorts and returns the current playlist `this` based on song names in alphabetical order.
     - `List<Song> showList()`: returns the playlist `this` in song names.
@@ -257,17 +255,16 @@ will likely refine your design to make your implementation easier to use.
     - `void removeEdge(Vertex from, Vertex to)`: removes the edge from `from` to `to`.
     - `boolean hasVertex(Vertex vertex)`: returns if the vertex `vertex` exists in the graph `this`.
     - `boolean hasEdge(Vertex from, Vertex to)`: returns if there exists an edge from `from` to `to`.
+  - **Secondary Methods**:
     - `List<Vertex> neighbors(Vertex vertex)`: returns all neighbors connected with an edge of `vertex`.
     - `int getWeight(Vertex from, Vertex to)`: returns the weight of the edge from `from` to `to`. If there is no edge between these two vertices, it will return -1.
-  - **Secondary Methods**:
     - `List<Vertex> bfs(Vertex start)`: returns the order of breadth-first search of the graph from `start`.
     - `List<Vertex> dfs(Vertex start)`: returns the order of depth-first search of the graph from `start`.
     - `List<Vertex> shortestPath(Vertex start, Vertex end)`: returns the shortest order of the path from `start` to `end` using Djikstra algorithm.
     - `boolean isConnected()`: returns if the graph is connected.
     - `boolean isDirected()`: returns if the graph is a direct graph.
     - `List<List<Vertex>> connectedComponents()`: returns all connected components. Only supports undirected graphs.
-    - `boolean isCyclic()`: returns if the graph is cyclic.
-    - `List<Edge> MST()`: returns the minimum spanning tree (MST) using Kruskal's algorithm.
+    - `List<Edge> MST()`: returns the minimum spanning tree (MST) using Prim's algorithm.
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
