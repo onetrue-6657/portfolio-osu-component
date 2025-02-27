@@ -249,18 +249,18 @@ will likely refine your design to make your implementation easier to use.
   - **Description**:
     - This component represents a graph. It includes vertices and edges and supports operations on these elements. Additionally, it will provide the tool to iterate vertices, search for the shortest path, etc. The component supports both directed and undirected graphs, but does not support negative edge weight graphs.
   - **Kernel Methods**:
-    - `void addVertex(Vertex vertex)`: adds the vertex `vertex` to `this`.
-    - `void addEdge(Vertex from, Vertex to, int weight)`: adds the edge from the vertex `from` to the vertex `to` with a weight `weight`.
-    - `void removeVertex(Vertex vertex)`: removes the vertex `vertex` from `this`. Also removes every edge that is connected to `vertex`.
-    - `void removeEdge(Vertex from, Vertex to)`: removes the edge from `from` to `to`.
-    - `boolean hasVertex(Vertex vertex)`: returns if the vertex `vertex` exists in the graph `this`.
-    - `boolean hasEdge(Vertex from, Vertex to)`: returns if there exists an edge from `from` to `to`.
+    - `void addVertex(int vertex)`: adds the vertex `vertex` to `this`.
+    - `void addEdge(int from, int to, int weight)`: adds the edge from the vertex `from` to the vertex `to` with a weight `weight`.
+    - `void removeVertex(int vertex)`: removes the vertex `vertex` from `this`. Also removes every edge that is connected to `vertex`.
+    - `void removeEdge(int from, int to)`: removes the edge from `from` to `to`.
+    - `boolean containsVertex(int vertex)`: returns if the vertex `vertex` exists in the graph `this`.
+    - `boolean containsEdge(int from, int to)`: returns if there exists an edge from `from` to `to`.
   - **Secondary Methods**:
-    - `List<Vertex> neighbors(Vertex vertex)`: returns all neighbors connected with an edge of `vertex`.
-    - `int getWeight(Vertex from, Vertex to)`: returns the weight of the edge from `from` to `to`. If there is no edge between these two vertices, it will return -1.
-    - `List<Vertex> bfs(Vertex start)`: returns the order of breadth-first search of the graph from `start`.
-    - `List<Vertex> dfs(Vertex start)`: returns the order of depth-first search of the graph from `start`.
-    - `List<Vertex> shortestPath(Vertex start, Vertex end)`: returns the shortest order of the path from `start` to `end` using Djikstra algorithm.
+    - `List<Vertex> neighbors(int vertex)`: returns all neighbors connected with an edge of `vertex`.
+    - `int getWeight(int from, int to)`: returns the weight of the edge from `from` to `to`. If there is no edge between these two vertices, it will return -1.
+    - `List<Vertex> bfs(int start)`: returns the order of breadth-first search of the graph from `start`.
+    - `List<Vertex> dfs(int start)`: returns the order of depth-first search of the graph from `start`.
+    - `List<Vertex> shortestPath(int start, int end)`: returns the shortest order of the path from `start` to `end` using Djikstra algorithm.
     - `boolean isConnected()`: returns if the graph is connected.
     - `boolean isDirected()`: returns if the graph is a direct graph.
     - `List<List<Vertex>> connectedComponents()`: returns all connected components. Only supports undirected graphs.
