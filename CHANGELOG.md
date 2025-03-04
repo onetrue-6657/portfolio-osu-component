@@ -27,4 +27,16 @@ the following form: YYYY.0M.0D.
 - Changed design to exclude some secondary methods for the `Graph`
 - Adjusted the design of the components
 
+## [2025.02.27]
+
+### Added
+
+- Designed kernel and enhanced interfaces for Graph component
+
+### Updated
+
+- Adjusted design in Component Brainstorm
+
 [unreleased]: https://github.com/onetrue-6657/portfolio-osu-component
+[2025.02.18]: https://github.com/onetrue-6657/portfolio-osu-component/commit/179565fb3e2ff3989d167ffb739c4e1b67c87472
+[2025.02.20]: https://github.com/onetrue-6657/portfolio-osu-component/pull/1
