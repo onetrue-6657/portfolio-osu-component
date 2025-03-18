@@ -584,5 +584,7 @@ public class GraphConcept {
         System.out.println("DFS: " + graph.dfs(zero));
 
         System.out.println("Shortest Path: " + graph.shortestPath(zero, three));
+
+        System.out.println("Connected: " + graph.isConnected());
     }
 }
