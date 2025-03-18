@@ -1,3 +1,7 @@
+package components.graph;
+
+import components.standard.Standard;
+
 /**
  * Graph kernel component with primary methods.
  *
@@ -8,7 +12,7 @@
  *     this is an empty graph with no vertices and no edges.
  * </pre>
  */
-public interface GraphKernel {
+public interface GraphKernel extends Standard<Graph> {
 
     /**
      * Adds the Vertex {@code vertex} to the graph. It will insert a new vertex
@@ -17,8 +21,8 @@ public interface GraphKernel {
      * @param vertex
      *            the tag of the vertex to be added to the graph
      *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is not in the arraylist.
+     * @ensures after execution, the graph contains a Vertex with tag
+     *          {@code vertex}.
      */
     void addVertex(int vertex);
 
@@ -33,23 +37,24 @@ public interface GraphKernel {
      * @param weight
      *            the weight of the edge
      *
-     * @requires {@code from} and {@code to} are non-negative integers and
-     *           {@code weight} is a positive integer. Vertices with tags
-     *           {@code from} and {@code to} are in the map. {@code from} is not
-     *           equal to {@code to}.
+     * @ensures after execution, there is an edge from vertex {@code from} to
+     *          vertex {@code to} with weight {@code weight}. If the graph is
+     *          undirected, an edge from vertex {@code to} to vertex
+     *          {@code from} is also added.
      */
     void addEdge(int from, int to, int weight);
 
     /**
      * Removes the vertex from the graph. It will remove the vertex from the
-     * arraylist. It will also remove every edge that is connected to the vertex
+     * arraylist. It will also remove every edge that is connected to the
+     * vertex.
      *
      * @param vertex
      *            the tag of the vertex to be removed
      *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is in the arraylist.
-     *
+     * @ensures after execution, the graph no longer contains the Vertex with
+     *          tag {@code vertex} and all edges incident to that vertex have
+     *          been removed.
      */
     void removeVertex(int vertex);
 
@@ -62,9 +67,9 @@ public interface GraphKernel {
      * @param to
      *            the tag of the vertex where the edge ends
      *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
+     * @ensures after execution, there is no edge from vertex {@code from} to
+     *          vertex {@code to}. If the graph is undirected, the edge from
+     *          vertex {@code to} to vertex {@code from} is also removed.
      */
     void removeEdge(int from, int to);
 
@@ -74,10 +79,11 @@ public interface GraphKernel {
      * @param vertex
      *            the tag of the vertex to be checked
      *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is in the arraylist.
+     * @ensures the return value accurately reflects the presence of a Vertex
+     *          with tag {@code vertex} in the graph.
      * @return true if the graph contains the vertex with tag {@code vertex},
      *         false otherwise.
+     *
      */
     boolean containsVertex(int vertex);
 
@@ -90,11 +96,11 @@ public interface GraphKernel {
      * @param to
      *            the tag of the vertex where the edge ends
      *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
+     * @ensures the return value accurately reflects the existence of an edge
+     *          from vertex {@code from} to vertex {@code to} in the graph.
      * @return true if there is an edge from vertex {@code from} to vertex
      *         {@code to}, false otherwise.
+     *
      */
     boolean containsEdge(int from, int to);
 }

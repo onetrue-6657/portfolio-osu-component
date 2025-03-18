@@ -37,6 +37,12 @@ the following form: YYYY.0M.0D.
 
 - Adjusted design in Component Brainstorm
 
+## [2025.03.18]
+
+### Updated
+
+- Adjusted proof of concept to add a main method and optimize ```dfs``` method.
+
 [unreleased]: https://github.com/onetrue-6657/portfolio-osu-component
 [2025.02.18]: https://github.com/onetrue-6657/portfolio-osu-component/commit/179565fb3e2ff3989d167ffb739c4e1b67c87472
 [2025.02.20]: https://github.com/onetrue-6657/portfolio-osu-component/pull/1

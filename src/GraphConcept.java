@@ -26,12 +26,6 @@ public class GraphConcept {
      */
     private boolean directed;
 
-    // /**
-    //  * The boolean variable to determine if the graph is weighted. It is used to
-    //  * check if the graph is weighted or not.
-    //  */
-    // private boolean weighted;
-
     /**
      * Constructs a new GraphConcept object. This method is a public constructor
      * that constructs a new graph.
@@ -303,15 +297,19 @@ public class GraphConcept {
         Stack<Integer> stack = new Stack<>();
         stack.push(start);
         boolean[] visited = new boolean[this.vertices.size()];
-        Arrays.fill(visited, true);
+        Arrays.fill(visited, false);
 
         while (!stack.isEmpty()) {
             int current = stack.pop();
 
+            if (!visited[current]) {
+                result.add(current);
+                visited[current] = true;
+            }
+
             for (int neighbor : this.vertices.get(current).neighbors.keySet()) {
                 if (!visited[neighbor]) {
                     stack.push(neighbor);
-                    visited[neighbor] = true;
                 }
             }
         }
@@ -553,5 +551,38 @@ public class GraphConcept {
         public int hashCode() {
             return this.tag;
         }
+    }
+
+    /**
+     * Main method for testing the GraphConcept class.
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        GraphConcept graph = new GraphConcept();
+
+        final int zero = 0;
+        final int one = 1;
+        final int two = 2;
+        final int three = 3;
+        final int five = 5;
+        final int six = 6;
+
+        graph.addVertex(zero);
+        graph.addVertex(one);
+        graph.addVertex(two);
+        graph.addVertex(three);
+
+        graph.addEdge(zero, one, five);
+        graph.addEdge(zero, two, three);
+        graph.addEdge(one, two, two);
+        graph.addEdge(one, three, six);
+        graph.addEdge(two, three, one);
+
+        System.out.println("BFS: " + graph.bfs(zero));
+
+        System.out.println("DFS: " + graph.dfs(zero));
+
+        System.out.println("Shortest Path: " + graph.shortestPath(zero, three));
     }
 }

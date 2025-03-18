@@ -1,8 +1,12 @@
+package components.graph;
+
 import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * {@code GraphKernel} enhanced with secondary methods.
+ *
+ * @author Zheng Ni
  */
 public interface Graph extends GraphKernel {
     /**
@@ -25,9 +29,8 @@ public interface Graph extends GraphKernel {
      * @param to
      *            the tag of the vertex where the edge ends
      *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
+     * @ensures {@code from} and {@code to} are non-negative integers. Vertices
+     *          with tags {@code from} and {@code to} are in the arraylist.
      * @return the weight of the edge from vertex {@code from} to vertex
      *         {@code to}.
      */
@@ -40,8 +43,8 @@ public interface Graph extends GraphKernel {
      * @param start
      *            the tag of the vertex where the search starts
      *
-     * @requires {@code start} is a non-negative integer and Vertex with tag
-     *           {@code start} is in the arraylist.
+     * @ensures the graph is not modified and the arraylist is ordered by the
+     *          order using breadth-first search.
      * @return an arraylist of the tags of the vertices in the graph.
      *         Breadth-first search is used to iterate all the vertices in the
      *         graph.
@@ -55,8 +58,8 @@ public interface Graph extends GraphKernel {
      * @param start
      *            the tag of the vertex where the search starts
      *
-     * @requires {@code start} is a non-negative integer and Vertex with tag
-     *           {@code start} is in the arraylist.
+     * @ensures the graph is not modified and the arraylist is ordered by the
+     *          order using depth-first search.
      * @return an arraylist of the tags of the vertices in the graph.
      *         Depth-first search is used to iterate all the vertices in the
      *         graph.
@@ -72,9 +75,9 @@ public interface Graph extends GraphKernel {
      * @param end
      *            the tag of the vertex where the path ends
      *
-     * @requires {@code start} and {@code end} are non-negative integers.
-     *           Vertices with tags {@code start} and {@code end} are in the
-     *           map. {@code start} is not equal to {@code end}.
+     * @ensures {@code start} and {@code end} are non-negative integers.
+     *          Vertices with tags {@code start} and {@code end} are in the
+     *          arraylist.
      * @return an arraylist of the tags of the vertices in the shortest path.
      *         Dijkstra's algorithm is used to find the shortest path in the
      *         graph.
@@ -84,7 +87,53 @@ public interface Graph extends GraphKernel {
     /**
      * Returns if the graph is connected.
      *
+     * @ensures the graph is not modified.
      * @return true if the graph is connected, false otherwise.
      */
     boolean isConnected();
+
+    /**
+     * Representation of a vertex in the graph.
+     */
+    interface Vertex {
+
+        /**
+         * The set of tags of the vertex's neighbors.
+         *
+         * @ensures the return {@code Map} includes the tags of the neighbors of
+         *          the vertex.
+         * @return the set of tags of the vertex's neighbors.
+         */
+        Map<Integer, Integer> getNeighbors();
+
+        /**
+         * Get the tag of the vertex.
+         *
+         * @ensures the return value is the only tag of the vertex.
+         * @return the tag of the vertex.
+         */
+        int getTag();
+
+        /**
+         * Returns if two objects are the same vertex.
+         *
+         * @param obj
+         *            the object to be compared
+         *
+         * @ensures the return value accurately reflects if the two objects are
+         *          the same vertex.
+         * @return true if the two objects are the same vertex, false otherwise.
+         */
+        @Override
+        boolean equals(Object obj);
+
+        /**
+         * Returns the hash code of the vertex.
+         *
+         * @ensures the return value is the hash code of the vertex.
+         * @return the hash code of the vertex.
+         */
+        @Override
+        int hashCode();
+    }
 }
