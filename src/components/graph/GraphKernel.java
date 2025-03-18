@@ -1,7 +1,5 @@
 package components.graph;
 
-import components.standard.Standard;
-
 /**
  * Graph kernel component with primary methods.
  *
@@ -12,7 +10,7 @@ import components.standard.Standard;
  *     this is an empty graph with no vertices and no edges.
  * </pre>
  */
-public interface GraphKernel extends Standard<Graph> {
+public interface GraphKernel extends standard {
 
     /**
      * Adds the Vertex {@code vertex} to the graph. It will insert a new vertex
