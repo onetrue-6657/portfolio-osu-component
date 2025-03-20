@@ -1,3 +1,5 @@
+package components.graph;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,11 +9,11 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Class representing a proof of concept implementation for a Graph component.
+ * Layered on top of {@code GraphKernel} with secondary methods.
  *
- * @author o-v-o (Zheng Ni)
+ * @author Zheng Ni
  */
-public class GraphConcept {
+public abstract class GraphSecondary implements Graph {
 
     /**
      * The primary representation variable for the graph. It is the core of a
@@ -19,176 +21,6 @@ public class GraphConcept {
      * including each vertex's neighbor vertices' tags.
      */
     private ArrayList<Vertex> vertices;
-
-    /**
-     * The boolean variable to determine if the graph is directed. It is used to
-     * check if the graph is directed or not.
-     */
-    private boolean directed;
-
-    /**
-     * Constructs a new GraphConcept object. This method is a public constructor
-     * that constructs a new graph.
-     */
-    public GraphConcept() {
-        this.vertices = new ArrayList<Vertex>();
-    }
-
-    /**
-     * Kernel Methods
-     */
-
-    /**
-     * Adds the Vertex {@code vertex} to the graph. It will insert a new vertex
-     * into the arraylist.
-     *
-     * @param vertex
-     *            the tag of the vertex to be added to the graph
-     *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is not in the arraylist.
-     */
-    public void addVertex(int vertex) {
-        assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert !this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is not in the arraylist.";
-
-        this.vertices.add(new Vertex(vertex));
-    }
-
-    /**
-     * Adds an edge to the graph. It will add the neighbor vertex to the set of
-     * the vertex's neighbors.
-     *
-     * @param from
-     *            the tag of the vertex where the edge starts
-     * @param to
-     *            the tag of the vertex where the edge ends
-     * @param weight
-     *            the weight of the edge
-     *
-     * @requires {@code from} and {@code to} are non-negative integers and
-     *           {@code weight} is a positive integer. Vertices with tags
-     *           {@code from} and {@code to} are in the map. {@code from} is not
-     *           equal to {@code to}.
-     */
-    public void addEdge(int from, int to, int weight) {
-        assert from >= 0 : "Violation of: from is a non-negative integer.";
-        assert to >= 0 : "Violation of: to is a non-negative integer.";
-        assert weight > 0 : "Violation of: weight is a positive integer.";
-        assert this.vertices.contains(
-                new Vertex(from)) : "Violation of: from is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(to)) : "Violation of: to is in the arraylist.";
-        assert from != to : "Violation of: from is not equal to to.";
-
-        this.vertices.get(from).neighbors.put(to, weight);
-        if (!this.directed) {
-            this.vertices.get(to).neighbors.put(from, weight);
-        }
-    }
-
-    /**
-     * Removes the vertex from the graph. It will remove the vertex from the
-     * arraylist. It will also remove every edge that is connected to the vertex
-     *
-     * @param vertex
-     *            the tag of the vertex to be removed
-     *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is in the arraylist.
-     *
-     */
-    public void removeVertex(int vertex) {
-        assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is in the arraylist.";
-
-        this.vertices.remove(new Vertex(vertex));
-        for (Vertex v : this.vertices) {
-            if (v.neighbors.containsKey(vertex)) {
-                v.neighbors.remove(vertex);
-            }
-        }
-    }
-
-    /**
-     * Removes the edge from the graph. It will remove the neighbor vertex from
-     * the set of the vertex's neighbors.
-     *
-     * @param from
-     *            the tag of the vertex where the edge starts
-     * @param to
-     *            the tag of the vertex where the edge ends
-     *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
-     */
-    public void removeEdge(int from, int to) {
-        assert from >= 0 : "Violation of: from is a non-negative integer.";
-        assert to >= 0 : "Violation of: to is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(from)) : "Violation of: from is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(to)) : "Violation of: to is in the arraylist.";
-        assert from != to : "Violation of: from is not equal to to.";
-
-        this.vertices.get(from).neighbors.remove(to);
-        if (!this.directed) {
-            this.vertices.get(to).neighbors.remove(from);
-        }
-    }
-
-    /**
-     * Checks if the graph contains the vertex with a certain tag.
-     *
-     * @param vertex
-     *            the tag of the vertex to be checked
-     *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is in the arraylist.
-     * @return true if the graph contains the vertex with tag {@code vertex},
-     *         false otherwise.
-     */
-    public boolean containsVertex(int vertex) {
-        assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is in the arraylist.";
-
-        return this.vertices.contains(new Vertex(vertex));
-    }
-
-    /**
-     * Checks if there is an edge from a certain vertex to another certain
-     * vertex.
-     *
-     * @param from
-     *            the tag of the vertex where the edge starts
-     * @param to
-     *            the tag of the vertex where the edge ends
-     *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
-     * @return true if there is an edge from vertex {@code from} to vertex
-     *         {@code to}, false otherwise.
-     */
-    public boolean containsEdge(int from, int to) {
-        assert from >= 0 : "Violation of: from is a non-negative integer.";
-        assert to >= 0 : "Violation of: to is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(from)) : "Violation of: from is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(to)) : "Violation of: to is in the arraylist.";
-        assert from != to : "Violation of: from is not equal to to.";
-
-        return this.vertices.get(from).neighbors.containsKey(to);
-    }
-
-    /**
-     * Secondary Methods
-     */
 
     /**
      * Returns all neighbors of a certain vertex.
@@ -200,6 +32,7 @@ public class GraphConcept {
      *           {@code vertex} is in the arraylist.
      * @return a map of the neighbors of the vertex with tag {@code vertex}.
      */
+    @Override
     public Map<Integer, Integer> getNeighbors(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
         assert this.vertices.contains(new Vertex(
@@ -222,6 +55,7 @@ public class GraphConcept {
      * @return the weight of the edge from vertex {@code from} to vertex
      *         {@code to}.
      */
+    @Override
     public int getWeight(int from, int to) {
         assert from >= 0 : "Violation of: from is a non-negative integer.";
         assert to >= 0 : "Violation of: to is a non-negative integer.";
@@ -247,6 +81,7 @@ public class GraphConcept {
      *         Breadth-first search is used to iterate all the vertices in the
      *         graph.
      */
+    @Override
     public ArrayList<Integer> bfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert this.vertices.contains(
@@ -288,6 +123,7 @@ public class GraphConcept {
      *         Depth-first search is used to iterate all the vertices in the
      *         graph.
      */
+    @Override
     public ArrayList<Integer> dfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert this.vertices.contains(
@@ -333,6 +169,7 @@ public class GraphConcept {
      *         Dijkstra's algorithm is used to find the shortest path in the
      *         graph.
      */
+    @Override
     public ArrayList<Integer> shortestPath(int start, int end) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert end >= 0 : "Violation of: end is a non-negative integer.";
@@ -391,6 +228,7 @@ public class GraphConcept {
      *
      * @return true if the graph is connected, false otherwise.
      */
+    @Override
     public boolean isConnected() {
         return this.bfs(0).size() == this.vertices.size();
     }
@@ -551,40 +389,5 @@ public class GraphConcept {
         public int hashCode() {
             return this.tag;
         }
-    }
-
-    /**
-     * Main method for testing the GraphConcept class.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        GraphConcept graph = new GraphConcept();
-
-        final int zero = 0;
-        final int one = 1;
-        final int two = 2;
-        final int three = 3;
-        final int five = 5;
-        final int six = 6;
-
-        graph.addVertex(zero);
-        graph.addVertex(one);
-        graph.addVertex(two);
-        graph.addVertex(three);
-
-        graph.addEdge(zero, one, five);
-        graph.addEdge(zero, two, three);
-        graph.addEdge(one, two, two);
-        graph.addEdge(one, three, six);
-        graph.addEdge(two, three, one);
-
-        System.out.println("BFS: " + graph.bfs(zero));
-
-        System.out.println("DFS: " + graph.dfs(zero));
-
-        System.out.println("Shortest Path: " + graph.shortestPath(zero, three));
-
-        System.out.println("Connected: " + graph.isConnected());
     }
 }
