@@ -41,7 +41,13 @@ the following form: YYYY.0M.0D.
 
 ### Updated
 
-- Adjusted proof of concept to add a main method and optimize ```dfs``` method.
+- Adjusted proof of concept to add a main method and optimize ```dfs``` method
+
+## [2025.03.19]
+
+### Added
+
+- Designed abstract class for Graph component
 
 [unreleased]: https://github.com/onetrue-6657/portfolio-osu-component
 [2025.02.18]: https://github.com/onetrue-6657/portfolio-osu-component/commit/179565fb3e2ff3989d167ffb739c4e1b67c87472
