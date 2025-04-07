@@ -2,7 +2,6 @@ package components.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -15,81 +14,37 @@ import java.util.Stack;
  */
 public abstract class GraphSecondary implements Graph {
 
-    /**
-     * The primary representation variable for the graph. It is the core of a
-     * graph representation, including the tags of each vertex and a set
-     * including each vertex's neighbor vertices' tags.
-     */
-    private ArrayList<Vertex> vertices;
-
-    /**
-     * Returns all neighbors of a certain vertex.
-     *
-     * @param vertex
-     *            the tag of the vertex
-     *
-     * @requires {@code vertex} is a non-negative integer and Vertex with tag
-     *           {@code vertex} is in the arraylist.
-     * @return a map of the neighbors of the vertex with tag {@code vertex}.
-     */
     @Override
     public Map<Integer, Integer> getNeighbors(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is in the arraylist.";
+        // assert this.vertices().contains(new Vertex(
+        //         vertex)) : "Violation of: vertex is in the arraylist.";
 
-        return this.vertices.get(vertex).neighbors;
+        return this.vertices().get(vertex).getNeighbors();
     }
 
-    /**
-     * Returns the weight of a certain edge.
-     *
-     * @param from
-     *            the tag of the vertex where the edge starts
-     * @param to
-     *            the tag of the vertex where the edge ends
-     *
-     * @requires {@code from} and {@code to} are non-negative integers. Vertices
-     *           with tags {@code from} and {@code to} are in the map.
-     *           {@code from} is not equal to {@code to}.
-     * @return the weight of the edge from vertex {@code from} to vertex
-     *         {@code to}.
-     */
     @Override
     public int getWeight(int from, int to) {
         assert from >= 0 : "Violation of: from is a non-negative integer.";
         assert to >= 0 : "Violation of: to is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(from)) : "Violation of: from is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(to)) : "Violation of: to is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(from)) : "Violation of: from is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
-        return this.vertices.get(from).neighbors.get(to);
+        return this.getNeighbors(from).get(to);
     }
 
-    /**
-     * Iterates all the vertices in the graph from a start point vertex using
-     * breadth-first search.
-     *
-     * @param start
-     *            the tag of the vertex where the search starts
-     *
-     * @requires {@code start} is a non-negative integer and Vertex with tag
-     *           {@code start} is in the arraylist.
-     * @return an arraylist of the tags of the vertices in the graph.
-     *         Breadth-first search is used to iterate all the vertices in the
-     *         graph.
-     */
     @Override
     public ArrayList<Integer> bfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Queue<Integer> queue = new LinkedList<>();
-        boolean[] visited = new boolean[this.vertices.size()];
+        boolean[] visited = new boolean[this.vertices().size()];
         Arrays.fill(visited, false);
 
         queue.add(start);
@@ -99,7 +54,8 @@ public abstract class GraphSecondary implements Graph {
             int current = queue.poll();
             result.add(current);
 
-            for (int neighbor : this.vertices.get(current).neighbors.keySet()) {
+            for (int neighbor : this.vertices().get(current).getNeighbors()
+                    .keySet()) {
                 if (!visited[neighbor]) {
                     queue.add(neighbor);
                     visited[neighbor] = true;
@@ -110,29 +66,16 @@ public abstract class GraphSecondary implements Graph {
         return result;
     }
 
-    /**
-     * Iterates all the vertices in the graph from a start point vertex using
-     * depth-first search.
-     *
-     * @param start
-     *            the tag of the vertex where the search starts
-     *
-     * @requires {@code start} is a non-negative integer and Vertex with tag
-     *           {@code start} is in the arraylist.
-     * @return an arraylist of the tags of the vertices in the graph.
-     *         Depth-first search is used to iterate all the vertices in the
-     *         graph.
-     */
     @Override
     public ArrayList<Integer> dfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Stack<Integer> stack = new Stack<>();
         stack.push(start);
-        boolean[] visited = new boolean[this.vertices.size()];
+        boolean[] visited = new boolean[this.vertices().size()];
         Arrays.fill(visited, false);
 
         while (!stack.isEmpty()) {
@@ -143,7 +86,8 @@ public abstract class GraphSecondary implements Graph {
                 visited[current] = true;
             }
 
-            for (int neighbor : this.vertices.get(current).neighbors.keySet()) {
+            for (int neighbor : this.vertices().get(current).getNeighbors()
+                    .keySet()) {
                 if (!visited[neighbor]) {
                     stack.push(neighbor);
                 }
@@ -153,45 +97,29 @@ public abstract class GraphSecondary implements Graph {
         return result;
     }
 
-    /**
-     * Returns the shortest path in the graph from a start point vertex to an
-     * end point vertex using Dijkstra's algorithm.
-     *
-     * @param start
-     *            the tag of the vertex where the path starts
-     * @param end
-     *            the tag of the vertex where the path ends
-     *
-     * @requires {@code start} and {@code end} are non-negative integers.
-     *           Vertices with tags {@code start} and {@code end} are in the
-     *           map. {@code start} is not equal to {@code end}.
-     * @return an arraylist of the tags of the vertices in the shortest path.
-     *         Dijkstra's algorithm is used to find the shortest path in the
-     *         graph.
-     */
     @Override
     public ArrayList<Integer> shortestPath(int start, int end) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert end >= 0 : "Violation of: end is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(start)) : "Violation of: start is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(end)) : "Violation of: end is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // assert this.vertices().contains(
+        //         new Vertex(end)) : "Violation of: end is in the arraylist.";
         assert start != end : "Violation of: start is not equal to end.";
 
-        int[] distance = new int[this.vertices.size()];
-        int[] previous = new int[this.vertices.size()];
-        boolean[] visited = new boolean[this.vertices.size()];
+        int[] distance = new int[this.vertices().size()];
+        int[] previous = new int[this.vertices().size()];
+        boolean[] visited = new boolean[this.vertices().size()];
         Arrays.fill(distance, Integer.MAX_VALUE);
         Arrays.fill(previous, -1);
 
         distance[start] = 0;
 
-        for (int i = 1; i <= this.vertices.size(); i++) {
+        for (int i = 1; i <= this.vertices().size(); i++) {
             int current = -1;
             int min = Integer.MAX_VALUE;
 
-            for (int j = 0; j < this.vertices.size(); j++) {
+            for (int j = 0; j < this.vertices().size(); j++) {
                 if (!visited[j] && distance[j] < min) {
                     current = j;
                     min = distance[j];
@@ -204,9 +132,10 @@ public abstract class GraphSecondary implements Graph {
 
             visited[current] = true;
 
-            for (int neighbor : this.vertices.get(current).neighbors.keySet()) {
-                int alt = distance[current]
-                        + this.vertices.get(current).neighbors.get(neighbor);
+            for (int neighbor : this.vertices().get(current).getNeighbors()
+                    .keySet()) {
+                int alt = distance[current] + this.vertices().get(current)
+                        .getNeighbors().get(neighbor);
 
                 if (alt < distance[neighbor]) {
                     distance[neighbor] = alt;
@@ -223,25 +152,17 @@ public abstract class GraphSecondary implements Graph {
         return result;
     }
 
-    /**
-     * Returns if the graph is connected.
-     *
-     * @return true if the graph is connected, false otherwise.
-     */
     @Override
     public boolean isConnected() {
-        return this.bfs(0).size() == this.vertices.size();
+        return this.bfs(0).size() == this.vertices().size();
     }
 
-    /**
-     * Returns if the graph is directed.
-     *
-     * @return true if the graph is directed, false otherwise.
-     */
+    @Override
     public boolean isDirected() {
-        for (Vertex v : this.vertices) {
-            for (int neighbor : v.neighbors.keySet()) {
-                if (!this.vertices.get(neighbor).neighbors.containsKey(v.tag)) {
+        for (Vertex v : this.vertices()) {
+            for (int neighbor : v.getNeighbors().keySet()) {
+                if (!this.vertices().get(neighbor).getNeighbors()
+                        .containsKey(v.getTag())) {
                     return true;
                 }
             }
@@ -250,21 +171,15 @@ public abstract class GraphSecondary implements Graph {
         return false;
     }
 
-    /**
-     * Returns the number of connected components.
-     *
-     * @requires the graph is undirected.
-     *
-     * @return the number of connected components.
-     */
+    @Override
     public int connectedComponents() {
         assert !this.isDirected() : "Violation of: the graph is undirected.";
 
         int count = 0;
-        boolean[] visited = new boolean[this.vertices.size()];
+        boolean[] visited = new boolean[this.vertices().size()];
         Arrays.fill(visited, false);
 
-        for (int i = 0; i < this.vertices.size(); i++) {
+        for (int i = 0; i < this.vertices().size(); i++) {
             if (!visited[i]) {
                 this.dfs(i);
                 count++;
@@ -274,25 +189,21 @@ public abstract class GraphSecondary implements Graph {
         return count;
     }
 
-    /**
-     * Returns the list of minimum spanning tree using Prim's algorithm.
-     *
-     * @return the list of minimum spanning tree.
-     */
+    @Override
     public ArrayList<Integer> minimumSpanningTree() {
-        int[] distance = new int[this.vertices.size()];
-        int[] previous = new int[this.vertices.size()];
-        boolean[] visited = new boolean[this.vertices.size()];
+        int[] distance = new int[this.vertices().size()];
+        int[] previous = new int[this.vertices().size()];
+        boolean[] visited = new boolean[this.vertices().size()];
         Arrays.fill(distance, Integer.MAX_VALUE);
         Arrays.fill(previous, -1);
 
         distance[0] = 0;
 
-        for (int i = 1; i <= this.vertices.size(); i++) {
+        for (int i = 1; i <= this.vertices().size(); i++) {
             int current = -1;
             int min = Integer.MAX_VALUE;
 
-            for (int j = 0; j < this.vertices.size(); j++) {
+            for (int j = 0; j < this.vertices().size(); j++) {
                 if (!visited[j] && distance[j] < min) {
                     current = j;
                     min = distance[j];
@@ -305,8 +216,10 @@ public abstract class GraphSecondary implements Graph {
 
             visited[current] = true;
 
-            for (int neighbor : this.vertices.get(current).neighbors.keySet()) {
-                int alt = this.vertices.get(current).neighbors.get(neighbor);
+            for (int neighbor : this.vertices().get(current).getNeighbors()
+                    .keySet()) {
+                int alt = this.vertices().get(current).getNeighbors()
+                        .get(neighbor);
 
                 if (alt < distance[neighbor]) {
                     distance[neighbor] = alt;
@@ -316,78 +229,12 @@ public abstract class GraphSecondary implements Graph {
         }
 
         ArrayList<Integer> result = new ArrayList<>();
-        for (int at = 0; at < this.vertices.size(); at++) {
+        for (int at = 0; at < this.vertices().size(); at++) {
             if (previous[at] != -1) {
                 result.add(at);
             }
         }
 
         return result;
-    }
-
-    /**
-     * Representation of a single vertex in the graph.
-     */
-    public static final class Vertex {
-
-        /**
-         * The tag of the vertex.
-         */
-        private int tag;
-
-        /**
-         * The set of tags of the vertex's neighbors.
-         */
-        private Map<Integer, Integer> neighbors;
-
-        /**
-         * Get the tag of the vertex.
-         *
-         * @return the tag of the vertex.
-         */
-        public int getTag() {
-            return this.tag;
-        }
-
-        /**
-         * Constructs a new Vertex object.
-         *
-         * @param tag
-         *            the tag of the vertex
-         */
-        public Vertex(int tag) {
-            this.tag = tag;
-            this.neighbors = new HashMap<Integer, Integer>();
-        }
-
-        /**
-         * Returns if two objects are the same vertex.
-         *
-         * @param obj
-         *            the object to be compared
-         *
-         * @return true if the two objects are the same vertex, false otherwise.
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || this.getClass() != obj.getClass()) {
-                return false;
-            }
-            Vertex vertex = (Vertex) obj;
-            return this.tag == vertex.tag;
-        }
-
-        /**
-         * Returns the hash code of the vertex.
-         *
-         * @return the hash code of the vertex.
-         */
-        @Override
-        public int hashCode() {
-            return this.tag;
-        }
     }
 }

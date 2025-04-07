@@ -12,11 +12,16 @@ public interface standard {
     /**
      * Transfer all elements from {@code source} to {@code this}, leaving
      * {@code source} empty.
+     *
+     * @param source
+     *            the source graph to transfer elements from
      */
-    void transferFrom();
+    void transferFrom(GraphSecondary source);
 
     /**
      * Clears {@code this} and then creates a new instance of {@code this}.
+     *
+     * @return a new instance of {@code this}
      */
-    void newInstance();
+    Graph1L newInstance();
 }

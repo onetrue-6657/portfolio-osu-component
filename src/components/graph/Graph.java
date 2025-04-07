@@ -9,6 +9,14 @@ import java.util.Map;
  * @author Zheng Ni
  */
 public interface Graph extends GraphKernel {
+
+    /**
+     * Returns the number of vertices in the graph.
+     *
+     * @return the number of vertices in the graph.
+     */
+    ArrayList<Vertex> vertices();
+
     /**
      * Returns all neighbors of a certain vertex.
      *
@@ -91,6 +99,29 @@ public interface Graph extends GraphKernel {
      * @return true if the graph is connected, false otherwise.
      */
     boolean isConnected();
+
+    /**
+     * Returns if the graph is directed.
+     *
+     * @return true if the graph is directed, false otherwise.
+     */
+    boolean isDirected();
+
+    /**
+     * Returns the number of connected components.
+     *
+     * @requires the graph is undirected.
+     *
+     * @return the number of connected components.
+     */
+    int connectedComponents();
+
+    /**
+     * Returns the list of minimum spanning tree using Prim's algorithm.
+     *
+     * @return the list of minimum spanning tree.
+     */
+    ArrayList<Integer> minimumSpanningTree();
 
     /**
      * Representation of a vertex in the graph.
