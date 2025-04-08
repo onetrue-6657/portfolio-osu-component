@@ -14,11 +14,19 @@ import java.util.Stack;
  */
 public abstract class GraphSecondary implements Graph {
 
+    /**
+     * Returns the number of vertices in the graph.
+     *
+     * @return the number of vertices in the graph.
+     */
+    @Override
+    public abstract ArrayList<Vertex> vertices();
+
     @Override
     public Map<Integer, Integer> getNeighbors(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
         // assert this.vertices().contains(new Vertex(
-        //         vertex)) : "Violation of: vertex is in the arraylist.";
+        // vertex)) : "Violation of: vertex is in the arraylist.";
 
         return this.vertices().get(vertex).getNeighbors();
     }
@@ -28,9 +36,9 @@ public abstract class GraphSecondary implements Graph {
         assert from >= 0 : "Violation of: from is a non-negative integer.";
         assert to >= 0 : "Violation of: to is a non-negative integer.";
         // assert this.vertices().contains(
-        //         new Vertex(from)) : "Violation of: from is in the arraylist.";
+        // new Vertex(from)) : "Violation of: from is in the arraylist.";
         // assert this.vertices().contains(
-        //         new Vertex(to)) : "Violation of: to is in the arraylist.";
+        // new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
         return this.getNeighbors(from).get(to);
@@ -40,7 +48,7 @@ public abstract class GraphSecondary implements Graph {
     public ArrayList<Integer> bfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         // assert this.vertices().contains(
-        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // new Vertex(start)) : "Violation of: start is in the arraylist.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -70,7 +78,7 @@ public abstract class GraphSecondary implements Graph {
     public ArrayList<Integer> dfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         // assert this.vertices().contains(
-        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // new Vertex(start)) : "Violation of: start is in the arraylist.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Stack<Integer> stack = new Stack<>();
@@ -102,9 +110,9 @@ public abstract class GraphSecondary implements Graph {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert end >= 0 : "Violation of: end is a non-negative integer.";
         // assert this.vertices().contains(
-        //         new Vertex(start)) : "Violation of: start is in the arraylist.";
+        // new Vertex(start)) : "Violation of: start is in the arraylist.";
         // assert this.vertices().contains(
-        //         new Vertex(end)) : "Violation of: end is in the arraylist.";
+        // new Vertex(end)) : "Violation of: end is in the arraylist.";
         assert start != end : "Violation of: start is not equal to end.";
 
         int[] distance = new int[this.vertices().size()];
