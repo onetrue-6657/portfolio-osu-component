@@ -6,6 +6,17 @@ import java.util.Map;
 
 /**
  * Layered on top of {@code GraphKernel} with secondary methods.
+ *
+ * @convention If the graph is undirected, for any edge (u, v), both: v ∈
+ *             u.neighbors and u ∈ v.neighbors. No duplicate vertices in
+ *             {@code this.vertices}.
+ *
+ * @correspondence {@code this.vertices} corresponds to the set of vertices in
+ *                 the abstract graph. For each vertex in {@code this.vertices},
+ *                 its neighbors map corresponds to the outgoing edges (and
+ *                 incoming, if undirected) and their weights in the abstract
+ *                 graph. {@ code this.directed} corresponds to whether the
+ *                 graph allows asymmetric edges.
  */
 public class Graph1L extends GraphSecondary {
 
