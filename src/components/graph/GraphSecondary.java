@@ -14,6 +14,34 @@ import java.util.Stack;
  */
 public abstract class GraphSecondary implements Graph {
 
+    @Override
+    public int hashCode() {
+        return this.vertices().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        GraphSecondary graph = (GraphSecondary) obj;
+        return this.vertices().equals(graph.vertices());
+    }
+
+    @Override
+    public String toString() {
+        String rep = "{";
+        for (int i = 0; i < this.vertices().size(); i++) {
+            rep += this.vertices().get(i).getTag() + ": "
+                    + this.vertices().get(i).getNeighbors() + "\n";
+        }
+        rep += "}";
+        return rep;
+    }
+
     /**
      * Returns the number of vertices in the graph.
      *
