@@ -1,10 +1,12 @@
 package components.graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -33,7 +35,7 @@ public abstract class GraphSecondary implements Graph {
 
     @Override
     public String toString() {
-        String rep = "{";
+        String rep = "{\n";
         for (int i = 0; i < this.vertices().size(); i++) {
             rep += this.vertices().get(i).getTag() + ": "
                     + this.vertices().get(i).getNeighbors() + "\n";
@@ -53,48 +55,53 @@ public abstract class GraphSecondary implements Graph {
     @Override
     public Map<Integer, Integer> getNeighbors(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        // assert this.vertices().contains(new Vertex(
-        // vertex)) : "Violation of: vertex is in the arraylist.";
 
-        return this.vertices().get(vertex).getNeighbors();
+        Vertex targetVertex = null;
+        for (Vertex v : this.vertices()) {
+            if (v.getTag() == vertex) {
+                targetVertex = v;
+                break;
+            }
+        }
+
+        assert targetVertex != null : "Violation of: vertex exists in the graph.";
+        return targetVertex.getNeighbors();
     }
 
     @Override
     public int getWeight(int from, int to) {
         assert from >= 0 : "Violation of: from is a non-negative integer.";
         assert to >= 0 : "Violation of: to is a non-negative integer.";
-        // assert this.vertices().contains(
-        // new Vertex(from)) : "Violation of: from is in the arraylist.";
-        // assert this.vertices().contains(
-        // new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
-        return this.getNeighbors(from).get(to);
+        Map<Integer, Integer> neighbors = this.getNeighbors(from);
+        assert neighbors.containsKey(
+                to) : "Violation of: edge exists from 'from' to 'to'.";
+
+        return neighbors.get(to);
     }
 
     @Override
     public ArrayList<Integer> bfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
-        // assert this.vertices().contains(
-        // new Vertex(start)) : "Violation of: start is in the arraylist.";
+        assert this.containsVertex(
+                start) : "Violation of: start vertex exists in graph.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Queue<Integer> queue = new LinkedList<>();
-        boolean[] visited = new boolean[this.vertices().size()];
-        Arrays.fill(visited, false);
-
+        Set<Integer> visited = new HashSet<>();
         queue.add(start);
-        visited[start] = true;
+        visited.add(start);
 
         while (!queue.isEmpty()) {
             int current = queue.poll();
             result.add(current);
 
-            for (int neighbor : this.vertices().get(current).getNeighbors()
-                    .keySet()) {
-                if (!visited[neighbor]) {
+            Map<Integer, Integer> neighbors = this.getNeighbors(current);
+            for (int neighbor : neighbors.keySet()) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
                     queue.add(neighbor);
-                    visited[neighbor] = true;
                 }
             }
         }
@@ -110,22 +117,26 @@ public abstract class GraphSecondary implements Graph {
 
         ArrayList<Integer> result = new ArrayList<>();
         Stack<Integer> stack = new Stack<>();
+        Set<Integer> visited = new HashSet<>();
+
         stack.push(start);
-        boolean[] visited = new boolean[this.vertices().size()];
-        Arrays.fill(visited, false);
 
         while (!stack.isEmpty()) {
             int current = stack.pop();
 
-            if (!visited[current]) {
+            if (!visited.contains(current)) {
                 result.add(current);
-                visited[current] = true;
-            }
+                visited.add(current);
 
-            for (int neighbor : this.vertices().get(current).getNeighbors()
-                    .keySet()) {
-                if (!visited[neighbor]) {
-                    stack.push(neighbor);
+                Map<Integer, Integer> neighbors = this.getNeighbors(current);
+
+                ArrayList<Integer> neighborList = new ArrayList<>(
+                        neighbors.keySet());
+                for (int i = neighborList.size() - 1; i >= 0; i--) {
+                    int neighbor = neighborList.get(i);
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                    }
                 }
             }
         }
@@ -137,69 +148,110 @@ public abstract class GraphSecondary implements Graph {
     public ArrayList<Integer> shortestPath(int start, int end) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
         assert end >= 0 : "Violation of: end is a non-negative integer.";
-        // assert this.vertices().contains(
-        // new Vertex(start)) : "Violation of: start is in the arraylist.";
-        // assert this.vertices().contains(
-        // new Vertex(end)) : "Violation of: end is in the arraylist.";
-        assert start != end : "Violation of: start is not equal to end.";
+        assert this.containsVertex(
+                start) : "Violation of: start vertex exists in graph.";
+        assert this.containsVertex(
+                end) : "Violation of: end vertex exists in graph.";
 
-        int[] distance = new int[this.vertices().size()];
-        int[] previous = new int[this.vertices().size()];
-        boolean[] visited = new boolean[this.vertices().size()];
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        Arrays.fill(previous, -1);
+        if (start == end) {
+            ArrayList<Integer> result = new ArrayList<>();
+            result.add(start);
+            return result;
+        }
 
-        distance[start] = 0;
+        Map<Integer, Integer> distance = new HashMap<>();
+        Map<Integer, Integer> previous = new HashMap<>();
+        Set<Integer> unvisited = new HashSet<>();
 
-        for (int i = 1; i <= this.vertices().size(); i++) {
+        for (Vertex v : this.vertices()) {
+            int vertexTag = v.getTag();
+            distance.put(vertexTag, Integer.MAX_VALUE);
+            previous.put(vertexTag, -1);
+            unvisited.add(vertexTag);
+        }
+
+        distance.put(start, 0);
+
+        while (!unvisited.isEmpty()) {
             int current = -1;
-            int min = Integer.MAX_VALUE;
+            int minDistance = Integer.MAX_VALUE;
 
-            for (int j = 0; j < this.vertices().size(); j++) {
-                if (!visited[j] && distance[j] < min) {
-                    current = j;
-                    min = distance[j];
+            for (int vertexTag : unvisited) {
+                if (distance.get(vertexTag) < minDistance) {
+                    minDistance = distance.get(vertexTag);
+                    current = vertexTag;
                 }
             }
 
-            if (current == -1) {
+            if (current == -1 || distance.get(current) == Integer.MAX_VALUE) {
                 break;
             }
 
-            visited[current] = true;
+            if (current == end) {
+                break;
+            }
 
-            for (int neighbor : this.vertices().get(current).getNeighbors()
-                    .keySet()) {
-                int alt = distance[current] + this.vertices().get(current)
-                        .getNeighbors().get(neighbor);
+            unvisited.remove(current);
 
-                if (alt < distance[neighbor]) {
-                    distance[neighbor] = alt;
-                    previous[neighbor] = current;
+            Map<Integer, Integer> neighbors = this.getNeighbors(current);
+            for (Map.Entry<Integer, Integer> neighborEntry : neighbors
+                    .entrySet()) {
+                int neighborTag = neighborEntry.getKey();
+                int weight = neighborEntry.getValue();
+
+                if (unvisited.contains(neighborTag)) {
+                    int alt = distance.get(current) + weight;
+                    if (alt < distance.get(neighborTag)) {
+                        distance.put(neighborTag, alt);
+                        previous.put(neighborTag, current);
+                    }
                 }
             }
         }
 
-        ArrayList<Integer> result = new ArrayList<>();
-        for (int at = end; at != -1; at = previous[at]) {
-            result.add(at);
+        ArrayList<Integer> path = new ArrayList<>();
+
+        if (previous.get(end) == -1 && start != end) {
+            return path;
         }
 
-        return result;
+        for (int at = end; at != -1; at = previous.get(at)) {
+            path.add(0, at);
+        }
+
+        return path;
     }
 
     @Override
     public boolean isConnected() {
-        return this.bfs(0).size() == this.vertices().size();
+        if (this.vertices().isEmpty()) {
+            return true;
+        }
+
+        int startVertex = this.vertices().get(0).getTag();
+
+        ArrayList<Integer> reachableVertices = this.bfs(startVertex);
+
+        return reachableVertices.size() == this.vertices().size();
     }
 
     @Override
     public boolean isDirected() {
         for (Vertex v : this.vertices()) {
-            for (int neighbor : v.getNeighbors().keySet()) {
-                if (!this.vertices().get(neighbor).getNeighbors()
-                        .containsKey(v.getTag())) {
-                    return true;
+            int vTag = v.getTag();
+            for (int neighborTag : v.getNeighbors().keySet()) {
+                Vertex neighborVertex = null;
+                for (Vertex potential : this.vertices()) {
+                    if (potential.getTag() == neighborTag) {
+                        neighborVertex = potential;
+                        break;
+                    }
+                }
+
+                if (neighborVertex != null) {
+                    if (!neighborVertex.getNeighbors().containsKey(vTag)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -212,12 +264,14 @@ public abstract class GraphSecondary implements Graph {
         assert !this.isDirected() : "Violation of: the graph is undirected.";
 
         int count = 0;
-        boolean[] visited = new boolean[this.vertices().size()];
-        Arrays.fill(visited, false);
+        Set<Integer> visited = new HashSet<>();
 
-        for (int i = 0; i < this.vertices().size(); i++) {
-            if (!visited[i]) {
-                this.dfs(i);
+        for (Vertex v : this.vertices()) {
+            int vertexTag = v.getTag();
+
+            if (!visited.contains(vertexTag)) {
+                ArrayList<Integer> component = this.dfs(vertexTag);
+                visited.addAll(component);
                 count++;
             }
         }
@@ -227,47 +281,68 @@ public abstract class GraphSecondary implements Graph {
 
     @Override
     public ArrayList<Integer> minimumSpanningTree() {
-        int[] distance = new int[this.vertices().size()];
-        int[] previous = new int[this.vertices().size()];
-        boolean[] visited = new boolean[this.vertices().size()];
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        Arrays.fill(previous, -1);
+        assert !this.isDirected() : "Violation of: graph is undirected.";
 
-        distance[0] = 0;
+        if (this.vertices().isEmpty()) {
+            return new ArrayList<>();
+        }
 
-        for (int i = 1; i <= this.vertices().size(); i++) {
-            int current = -1;
-            int min = Integer.MAX_VALUE;
+        ArrayList<Vertex> allVertices = this.vertices();
+        int vertexCount = allVertices.size();
 
-            for (int j = 0; j < this.vertices().size(); j++) {
-                if (!visited[j] && distance[j] < min) {
-                    current = j;
-                    min = distance[j];
+        int start = allVertices.get(0).getTag();
+
+        Map<Integer, Boolean> visited = new HashMap<>();
+        Map<Integer, Integer> key = new HashMap<>();
+        Map<Integer, Integer> parent = new HashMap<>();
+
+        for (Vertex v : allVertices) {
+            int vTag = v.getTag();
+            visited.put(vTag, false);
+            key.put(vTag, Integer.MAX_VALUE);
+            parent.put(vTag, -1);
+        }
+
+        key.put(start, 0);
+
+        for (int i = 0; i < vertexCount; i++) {
+            int u = -1;
+            int minKey = Integer.MAX_VALUE;
+
+            for (Vertex v : allVertices) {
+                int vTag = v.getTag();
+                if (!visited.get(vTag) && key.get(vTag) < minKey) {
+                    u = vTag;
+                    minKey = key.get(vTag);
                 }
             }
 
-            if (current == -1) {
+            if (u == -1) {
                 break;
             }
 
-            visited[current] = true;
+            visited.put(u, true);
 
-            for (int neighbor : this.vertices().get(current).getNeighbors()
-                    .keySet()) {
-                int alt = this.vertices().get(current).getNeighbors()
-                        .get(neighbor);
+            Map<Integer, Integer> neighbors = this.getNeighbors(u);
+            for (Map.Entry<Integer, Integer> entry : neighbors.entrySet()) {
+                int v = entry.getKey();
+                int weight = entry.getValue();
 
-                if (alt < distance[neighbor]) {
-                    distance[neighbor] = alt;
-                    previous[neighbor] = current;
+                if (!visited.get(v) && weight < key.get(v)) {
+                    parent.put(v, u);
+                    key.put(v, weight);
                 }
             }
         }
 
         ArrayList<Integer> result = new ArrayList<>();
-        for (int at = 0; at < this.vertices().size(); at++) {
-            if (previous[at] != -1) {
-                result.add(at);
+
+        for (Vertex v : allVertices) {
+            int vTag = v.getTag();
+            if (parent.get(vTag) != -1 || vTag == start) {
+                if (!result.contains(vTag)) {
+                    result.add(vTag);
+                }
             }
         }
 

@@ -99,8 +99,8 @@ public class Graph1L extends GraphSecondary {
     @Override
     public void addVertex(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert !this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is not in the arraylist.";
+        assert !this.containsVertex(
+                vertex) : "Violation of: vertex is not already in the graph.";
 
         this.vertices.add(new Vertex(vertex));
     }
@@ -116,9 +116,21 @@ public class Graph1L extends GraphSecondary {
                 new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
-        this.vertices.get(from).getNeighbors().put(to, weight);
+        Vertex fromVertex = null;
+        Vertex toVertex = null;
+
+        for (Graph.Vertex v : this.vertices) {
+            if (v.getTag() == from) {
+                fromVertex = (Vertex) v;
+            }
+            if (v.getTag() == to) {
+                toVertex = (Vertex) v;
+            }
+        }
+
+        fromVertex.getNeighbors().put(to, weight);
         if (!this.directed) {
-            this.vertices.get(to).getNeighbors().put(from, weight);
+            toVertex.getNeighbors().put(from, weight);
         }
     }
 
@@ -155,23 +167,44 @@ public class Graph1L extends GraphSecondary {
     @Override
     public boolean containsVertex(int vertex) {
         assert vertex >= 0 : "Violation of: vertex is a non-negative integer.";
-        assert this.vertices.contains(new Vertex(
-                vertex)) : "Violation of: vertex is in the arraylist.";
 
-        return this.vertices.contains(new Vertex(vertex));
+        for (Graph.Vertex v : this.vertices) {
+            if (v.getTag() == vertex) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean containsEdge(int from, int to) {
         assert from >= 0 : "Violation of: from is a non-negative integer.";
         assert to >= 0 : "Violation of: to is a non-negative integer.";
-        assert this.vertices.contains(
-                new Vertex(from)) : "Violation of: from is in the arraylist.";
-        assert this.vertices.contains(
-                new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
-        return this.vertices.get(from).getNeighbors().containsKey(to);
+        boolean fromExists = false;
+        boolean toExists = false;
+        for (Graph.Vertex v : this.vertices) {
+            if (v.getTag() == from) {
+                fromExists = true;
+            }
+            if (v.getTag() == to) {
+                toExists = true;
+            }
+        }
+
+        assert fromExists : "Violation of: from is in the graph.";
+        assert toExists : "Violation of: to is in the graph.";
+
+        Vertex fromVertex = null;
+        for (Graph.Vertex v : this.vertices) {
+            if (v.getTag() == from) {
+                fromVertex = (Vertex) v;
+                break;
+            }
+        }
+
+        return fromVertex.getNeighbors().containsKey(to);
     }
 
     /**
