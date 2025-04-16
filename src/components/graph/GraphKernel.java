@@ -101,4 +101,11 @@ public interface GraphKernel extends standard {
      *
      */
     boolean containsEdge(int from, int to);
+
+    /**
+     * Returns if the graph is directed.
+     *
+     * @return true if the graph is directed, false otherwise.
+     */
+    boolean isDirected();
 }

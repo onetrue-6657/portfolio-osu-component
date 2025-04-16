@@ -14,6 +14,8 @@ import components.graph.Graph1L;
  * depth-first search, finding the shortest path using Dijkstra's algorithm,
  * checking if the graph is connected, finding the number of connected
  * components, and finding a minimum spanning tree using Prim's algorithm.
+ *
+ * @author Zheng Ni
  */
 public class AutoGraph {
 

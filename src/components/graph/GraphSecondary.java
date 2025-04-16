@@ -16,21 +16,80 @@ import java.util.Stack;
  */
 public abstract class GraphSecondary implements Graph {
 
-    @Override
-    public int hashCode() {
-        return this.vertices().hashCode();
-    }
+    /**
+     * Indicates whether the graph is directed.
+     */
+    protected boolean directed;
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null || this.getClass() != obj.getClass()) {
+        if (!(obj instanceof Graph)) {
             return false;
         }
-        GraphSecondary graph = (GraphSecondary) obj;
-        return this.vertices().equals(graph.vertices());
+
+        Graph that = (Graph) obj;
+
+        if (this.isDirected() != that.isDirected()) {
+            return false;
+        }
+
+        if (this.vertices().size() != that.vertices().size()) {
+            return false;
+        }
+
+        for (Graph.Vertex v : this.vertices()) {
+            int tag = v.getTag();
+            if (!that.containsVertex(tag)) {
+                return false;
+            }
+        }
+
+        for (Graph.Vertex v1 : this.vertices()) {
+            int from = v1.getTag();
+            Map<Integer, Integer> neighbors = v1.getNeighbors();
+
+            for (Map.Entry<Integer, Integer> entry : neighbors.entrySet()) {
+                int to = entry.getKey();
+                int weight = entry.getValue();
+
+                if (!that.containsEdge(from, to)
+                        || that.getWeight(from, to) != weight) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = this.isDirected() ? 1 : 0;
+
+        for (Graph.Vertex v : this.vertices()) {
+            result = 31 * result + v.getTag();
+        }
+
+        for (Graph.Vertex v : this.vertices()) {
+            int from = v.getTag();
+            Map<Integer, Integer> neighbors = v.getNeighbors();
+
+            for (Map.Entry<Integer, Integer> entry : neighbors.entrySet()) {
+                int to = entry.getKey();
+                int weight = entry.getValue();
+
+                if (!this.isDirected() && from > to) {
+                    result = 31 * result + (to * 31 + from) + weight;
+                } else {
+                    result = 31 * result + (from * 31 + to) + weight;
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -233,30 +292,6 @@ public abstract class GraphSecondary implements Graph {
         ArrayList<Integer> reachableVertices = this.bfs(startVertex);
 
         return reachableVertices.size() == this.vertices().size();
-    }
-
-    @Override
-    public boolean isDirected() {
-        for (Vertex v : this.vertices()) {
-            int vTag = v.getTag();
-            for (int neighborTag : v.getNeighbors().keySet()) {
-                Vertex neighborVertex = null;
-                for (Vertex potential : this.vertices()) {
-                    if (potential.getTag() == neighborTag) {
-                        neighborVertex = potential;
-                        break;
-                    }
-                }
-
-                if (neighborVertex != null) {
-                    if (!neighborVertex.getNeighbors().containsKey(vTag)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override

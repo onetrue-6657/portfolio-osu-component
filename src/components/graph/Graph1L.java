@@ -158,9 +158,28 @@ public class Graph1L extends GraphSecondary {
                 new Vertex(to)) : "Violation of: to is in the arraylist.";
         assert from != to : "Violation of: from is not equal to to.";
 
-        this.vertices.get(from).getNeighbors().remove(to);
+        Vertex fromVertex = null;
+        for (Graph.Vertex v : this.vertices) {
+            if (v.getTag() == from) {
+                fromVertex = (Vertex) v;
+                break;
+            }
+        }
+
+        Vertex toVertex = null;
         if (!this.directed) {
-            this.vertices.get(to).getNeighbors().remove(from);
+            for (Graph.Vertex v : this.vertices) {
+                if (v.getTag() == to) {
+                    toVertex = (Vertex) v;
+                    break;
+                }
+            }
+        }
+
+        fromVertex.getNeighbors().remove(to);
+
+        if (!this.directed) {
+            toVertex.getNeighbors().remove(from);
         }
     }
 
@@ -205,6 +224,31 @@ public class Graph1L extends GraphSecondary {
         }
 
         return fromVertex.getNeighbors().containsKey(to);
+    }
+
+    @Override
+    public boolean isDirected() {
+        // for (Vertex v : this.vertices()) {
+        //     int vTag = v.getTag();
+        //     for (int neighborTag : v.getNeighbors().keySet()) {
+        //         Vertex neighborVertex = null;
+        //         for (Vertex potential : this.vertices()) {
+        //             if (potential.getTag() == neighborTag) {
+        //                 neighborVertex = potential;
+        //                 break;
+        //             }
+        //         }
+
+        //         if (neighborVertex != null) {
+        //             if (!neighborVertex.getNeighbors().containsKey(vTag)) {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        // }
+
+        // return false;
+        return this.directed;
     }
 
     /**

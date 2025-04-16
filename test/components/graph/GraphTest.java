@@ -10,14 +10,37 @@ import org.junit.Test;
 
 public class GraphTest {
 
+    /**
+     * Create a new undirected graph.
+     *
+     * @return a new undirected graph.
+     */
     private Graph constructor() {
         return new Graph1L();
     }
 
+    /**
+     * Create a new graph.
+     *
+     * @param directed
+     *            whether the graph is directed or not
+     * @return a new graph
+     */
     private Graph constructor(boolean directed) {
         return new Graph1L(directed);
     }
 
+    /**
+     * Create a new graph with vertices and edges.
+     *
+     * @param directed
+     *            whether the graph is directed or not
+     * @param vertices
+     *            the vertices to be added to the graph
+     * @param edges
+     *            the edges to be added to the graph
+     * @return a new graph with vertices and edges
+     */
     private Graph constructorWithVerticesAndEdges(boolean directed,
             int[] vertices, int[][] edges) {
         Graph g = this.constructor(directed);
@@ -32,6 +55,80 @@ public class GraphTest {
 
         return g;
     }
+
+    /**
+     * Test constructors
+     */
+
+    @Test
+    public void testDefaultConstructor() {
+        Graph graph = this.constructor();
+
+        assertEquals(0, graph.vertices().size());
+        assertFalse(graph.isDirected());
+    }
+
+    @Test
+    public void testParameterizedConstructor() {
+        Graph graph = this.constructor();
+        Graph directedGraph = this.constructor(true);
+        Graph undirectedGraph = this.constructor(false);
+
+        assertFalse(graph.isDirected());
+        assertTrue(directedGraph.isDirected());
+        assertFalse(undirectedGraph.isDirected());
+    }
+
+    @Test
+    public void testConstructorWithVerticesAndEdges() {
+        int[] vertices = { 1, 3, 5 };
+        int[][] edges = { { 1, 3, 10 }, { 3, 5, 20 }, { 5, 1, 30 } };
+
+        Graph undirectedGraph = this.constructorWithVerticesAndEdges(false,
+                vertices, edges);
+
+        assertEquals(3, undirectedGraph.vertices().size());
+        assertTrue(undirectedGraph.containsVertex(1));
+        assertTrue(undirectedGraph.containsVertex(3));
+        assertTrue(undirectedGraph.containsVertex(5));
+
+        assertTrue(undirectedGraph.containsEdge(1, 3));
+        assertTrue(undirectedGraph.containsEdge(3, 5));
+        assertTrue(undirectedGraph.containsEdge(5, 1));
+        assertEquals(10, undirectedGraph.getWeight(1, 3));
+        assertEquals(20, undirectedGraph.getWeight(3, 5));
+        assertEquals(30, undirectedGraph.getWeight(5, 1));
+
+        assertTrue(undirectedGraph.containsEdge(3, 1));
+        assertTrue(undirectedGraph.containsEdge(5, 3));
+        assertTrue(undirectedGraph.containsEdge(1, 5));
+        assertEquals(10, undirectedGraph.getWeight(3, 1));
+        assertEquals(20, undirectedGraph.getWeight(5, 3));
+        assertEquals(30, undirectedGraph.getWeight(1, 5));
+
+        Graph directedGraph = this.constructorWithVerticesAndEdges(true,
+                vertices, edges);
+
+        assertEquals(3, directedGraph.vertices().size());
+        assertTrue(directedGraph.containsVertex(1));
+        assertTrue(directedGraph.containsVertex(3));
+        assertTrue(directedGraph.containsVertex(5));
+
+        assertTrue(directedGraph.containsEdge(1, 3));
+        assertTrue(directedGraph.containsEdge(3, 5));
+        assertTrue(directedGraph.containsEdge(5, 1));
+        assertEquals(10, directedGraph.getWeight(1, 3));
+        assertEquals(20, directedGraph.getWeight(3, 5));
+        assertEquals(30, directedGraph.getWeight(5, 1));
+
+        assertFalse(directedGraph.containsEdge(3, 1));
+        assertFalse(directedGraph.containsEdge(5, 3));
+        assertFalse(directedGraph.containsEdge(1, 5));
+    }
+
+    /**
+     * Test of secondary methods
+     */
 
     @Test
     public void testGetWeight() {
@@ -69,7 +166,6 @@ public class GraphTest {
 
         assertEquals(4, bfsResult.size());
         assertEquals(Integer.valueOf(0), bfsResult.get(0));
-        // 由于 BFS 在同一层级的节点顺序可能不确定，这里不测试具体顺序
         assertTrue(bfsResult.contains(1));
         assertTrue(bfsResult.contains(2));
         assertTrue(bfsResult.contains(3));
@@ -91,7 +187,6 @@ public class GraphTest {
 
         assertEquals(4, bfsResult.size());
         assertEquals(Integer.valueOf(0), bfsResult.get(0));
-        // 由于 BFS 在同一层级的节点顺序可能不确定，这里不测试具体顺序
         assertTrue(bfsResult.contains(1));
         assertTrue(bfsResult.contains(2));
         assertTrue(bfsResult.contains(3));
@@ -114,7 +209,6 @@ public class GraphTest {
 
         assertEquals(4, dfsResult.size());
         assertEquals(Integer.valueOf(0), dfsResult.get(0));
-        // DFS的顺序取决于邻居的迭代顺序，不测试具体顺序
         assertTrue(dfsResult.contains(1));
         assertTrue(dfsResult.contains(2));
         assertTrue(dfsResult.contains(3));
@@ -207,7 +301,6 @@ public class GraphTest {
         graph.addVertex(3);
 
         graph.addEdge(0, 1, 1);
-        // 顶点2和3没有连接到图的其余部分
         graph.addEdge(2, 3, 1);
 
         assertFalse(graph.isConnected());
@@ -250,14 +343,10 @@ public class GraphTest {
         graph.addVertex(4);
         graph.addVertex(5);
 
-        // 第一个连通分量：0-1-2
         graph.addEdge(0, 1, 1);
         graph.addEdge(1, 2, 1);
 
-        // 第二个连通分量：3-4
         graph.addEdge(3, 4, 1);
-
-        // 第三个连通分量：单独的顶点5
 
         assertEquals(3, graph.connectedComponents());
     }
@@ -278,14 +367,11 @@ public class GraphTest {
 
         ArrayList<Integer> mst = graph.minimumSpanningTree();
 
-        // MST应该包含所有顶点
         assertEquals(4, mst.size());
         assertTrue(mst.contains(0));
         assertTrue(mst.contains(1));
         assertTrue(mst.contains(2));
         assertTrue(mst.contains(3));
-
-        // 这里无法测试确切的MST结构，但可以验证其基本性质
     }
 
     @Test
@@ -314,7 +400,7 @@ public class GraphTest {
         Graph graph2 = this.constructor(false);
         graph2.addVertex(1);
         graph2.addVertex(2);
-        graph2.addEdge(1, 2, 10); // 不同的边权重
+        graph2.addEdge(1, 2, 10);
 
         assertFalse(graph1.equals(graph2));
         assertFalse(graph2.equals(graph1));
