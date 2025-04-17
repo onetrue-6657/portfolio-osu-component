@@ -7,6 +7,8 @@ import components.graph.Graph;
 import components.graph.Graph1L;
 
 /**
+ * Demo of a social graph using the {@code Graph} component.
+ *
  * This class provides a demo for creating a graph from user input and solving
  * graph theory problems. It allows the user to create a graph, modify it, and
  * solve various graph theory problems such as finding neighbors, finding the

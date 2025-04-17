@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+/**
+ * Test class for the Graph class.
+ *
+ * @author Zheng Ni
+ */
 public class GraphTest {
 
     /**

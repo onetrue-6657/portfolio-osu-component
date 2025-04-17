@@ -6,6 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+/**
+ * Test class for the Graph1L class.
+ *
+ * @author Zheng Ni
+ */
 public class Graph1LTest {
 
     /**
