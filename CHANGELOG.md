@@ -6,8 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) of
 the following form: YYYY.0M.0D.
 
-## [Unreleased]
-
 ## [2025.02.18]
 
 ### Added
@@ -59,6 +57,17 @@ the following form: YYYY.0M.0D.
 
 - Changed design of GraphSecondary.java
 
-[unreleased]: https://github.com/onetrue-6657/portfolio-osu-component
+## [2025.04.17]
+
+### Added
+
+- Designed test suite for Graph component
+- Designed two different use cases for Graph component
+
 [2025.02.18]: https://github.com/onetrue-6657/portfolio-osu-component/commit/179565fb3e2ff3989d167ffb739c4e1b67c87472
 [2025.02.20]: https://github.com/onetrue-6657/portfolio-osu-component/pull/1
+[2025.02.27]: https://github.com/onetrue-6657/portfolio-osu-component/pull/3
+[2025.03.18]: https://github.com/onetrue-6657/portfolio-osu-component/pull/4
+[2025.03.19]: https://github.com/onetrue-6657/portfolio-osu-component/pull/5
+[2025.04.07]: https://github.com/onetrue-6657/portfolio-osu-component/pull/6
+[2025.04.17]: https://github.com/onetrue-6657/portfolio-osu-component/pull/8

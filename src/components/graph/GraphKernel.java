@@ -9,6 +9,8 @@ package components.graph;
  *   ensures
  *     this is an empty graph with no vertices and no edges.
  * </pre>
+ *
+ * @author Zheng Ni
  */
 public interface GraphKernel extends standard {
 
@@ -101,4 +103,11 @@ public interface GraphKernel extends standard {
      *
      */
     boolean containsEdge(int from, int to);
+
+    /**
+     * Returns if the graph is directed.
+     *
+     * @return true if the graph is directed, false otherwise.
+     */
+    boolean isDirected();
 }

@@ -101,13 +101,6 @@ public interface Graph extends GraphKernel {
     boolean isConnected();
 
     /**
-     * Returns if the graph is directed.
-     *
-     * @return true if the graph is directed, false otherwise.
-     */
-    boolean isDirected();
-
-    /**
      * Returns the number of connected components.
      *
      * @requires the graph is undirected.
