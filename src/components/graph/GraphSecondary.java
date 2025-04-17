@@ -103,11 +103,6 @@ public abstract class GraphSecondary implements Graph {
         return rep;
     }
 
-    /**
-     * Returns the number of vertices in the graph.
-     *
-     * @return the number of vertices in the graph.
-     */
     @Override
     public abstract ArrayList<Vertex> vertices();
 
@@ -171,8 +166,6 @@ public abstract class GraphSecondary implements Graph {
     @Override
     public ArrayList<Integer> dfs(int start) {
         assert start >= 0 : "Violation of: start is a non-negative integer.";
-        // assert this.vertices().contains(
-        // new Vertex(start)) : "Violation of: start is in the arraylist.";
 
         ArrayList<Integer> result = new ArrayList<>();
         Stack<Integer> stack = new Stack<>();

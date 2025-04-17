@@ -17,6 +17,8 @@ import java.util.Map;
  *                 incoming, if undirected) and their weights in the abstract
  *                 graph. {@ code this.directed} corresponds to whether the
  *                 graph allows asymmetric edges.
+ *
+ * @author Zheng Ni
  */
 public class Graph1L extends GraphSecondary {
 

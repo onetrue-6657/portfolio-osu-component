@@ -9,6 +9,8 @@ package components.graph;
  *   ensures
  *     this is an empty graph with no vertices and no edges.
  * </pre>
+ *
+ * @author Zheng Ni
  */
 public interface GraphKernel extends standard {
 

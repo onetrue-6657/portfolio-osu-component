@@ -13,4 +13,3 @@ component. The score breakdown for all 6 parts is as follows:
 | ------------------------------------ | ------------------- |
 | Formative Assessments (5 @ 10% each) | 50%                 |
 | Summative Assessment                 | 50%                 |
-

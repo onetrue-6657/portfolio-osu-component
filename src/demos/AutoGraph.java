@@ -105,8 +105,6 @@ public class AutoGraph {
             AutoGraph autoGraphInstance = new AutoGraph();
             autoGraphInstance.options();
         }
-
-        // scanner.close();
     }
 
     /**
@@ -172,7 +170,6 @@ public class AutoGraph {
         }
 
         System.out.println("Graph created successfully.");
-        // scanner.close();
         this.options();
     }
 
@@ -203,7 +200,6 @@ public class AutoGraph {
                 System.out.println("Enter how many vertices you want to add:");
                 int vertex = scanner.nextInt();
                 if (vertex != -1) {
-                    int currentVertex = this.graph.vertices().size();
                     int maxVertex = 0;
                     for (Graph.Vertex v : this.graph.vertices()) {
                         if (v.getTag() > maxVertex) {
@@ -317,7 +313,6 @@ public class AutoGraph {
             choice = scanner.nextInt();
         }
 
-        // scanner.close();
         System.out.println("Graph modify completed.");
         this.options();
     }
@@ -468,7 +463,6 @@ public class AutoGraph {
             choice = scanner.nextInt();
         }
 
-        // scanner.close();
         System.out.println("Problem solve completed.");
         this.options();
     }

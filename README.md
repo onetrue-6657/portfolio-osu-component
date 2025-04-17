@@ -1,80 +1,110 @@
-# Portfolio Project
+# Graph Component
 
-The purpose of this repo is to provide a framework for creating your own
-component in the software sequence discipline. If you were unsure whether
-or not to make your own, consider the following testimonial:
+## Idea
 
-> I really enjoyed the portfolio project! It gave me a stronger understanding
-> of the OSU software discipline while also giving me the flexibility to
-> design something that reflected my interests. This made the experience
-> rewarding and enjoyable as I created a product I was proud of!
+This project is from Dr. Jeremy Grifski ([jrg94])'s course at the Ohio State University College of Engineering [CSE 2231 - Software II]. This is a portfolio project that is similar to the [OSU Component] used for the software sequence (which I think is really bad for learning Java) created by Professor Paolo Bucci.
 
-## Recommended Steps to Get Started
+In the process of Brainstorming, I referred to [SoftwareComponents] repository by Dr. Grifski to find inspirations. Finally among the three ideas, I chose Graph as the topic of the component, which involves a new data structure called `Graph` and involved methods to easily solve graph theory problems such as depth-first search, breadth-first search, and minimum spanning tree.
 
-When starting your portfolio project, the following steps should make your life
-a bit easier.
+## Design
 
-### Step 1: Create a Repo From This Template
+- **Description**:
+  - This component implements a graph data structure. It supports operations on vertices and edges, as well as various graph algorithms such as depth-first search (DFS), breadth-first search (BFS), shortest path, and minimum spanning tree (MST). The component supports both directed and undirected graphs but does not allow negative edge weights.
 
-Assuming you're reading this README from GitHub, you can make use of this
-repo by clicking the `Use this template` button in the top-right corner of
-this page. If you can't find the button, [this link][use-this-template]
-should work as well. Personally, I would recommend using the
-`Create a new repository` option, which will allow you to name the
-repository after your component. Given that you will be submitting pull
-requests to me through Carmen, you'll want to make sure your repository
-is public. Then, you can click `Create repository`. After that, you can
-go through all the usual steps of cloning a repository on your system to
-get to work. I use GitHub Desktop to clone projects, and it has a nice
-feature of letting you open a repo directly in VSCode from the
-`Repository` menu.
+- **Kernel Methods**:
+  - `void addVertex(int vertex)`: Adds the vertex `vertex` to the graph.
+  - `void addEdge(int from, int to, int weight)`: Adds an edge from vertex `from` to vertex `to` with a weight `weight`.
+  - `void removeVertex(int vertex)`: Removes the vertex `vertex` from the graph, along with all edges connected to it.
+  - `void removeEdge(int from, int to)`: Removes the edge from vertex `from` to vertex `to`.
+  - `boolean containsVertex(int vertex)`: Checks if the vertex `vertex` exists in the graph.
+  - `boolean containsEdge(int from, int to)`: Checks if there is an edge from vertex `from` to vertex `to`.
+  - `boolean isDirected()`: Returns whether the graph is directed.
+  - `Map<Integer, Integer> getNeighbors(int vertex)`: Returns a map of all neighbors of the vertex `vertex` and their corresponding edge weights.
 
-### Step 2: Install Recommended Plugins
+- **Secondary Methods**:
+  - `ArrayList<Integer> bfs(int start)`: Performs a breadth-first search starting from vertex `start` and returns the order of visited vertices.
+  - `ArrayList<Integer> dfs(int start)`: Performs a depth-first search starting from vertex `start` and returns the order of visited vertices.
+  - `ArrayList<Integer> shortestPath(int start, int end)`: Finds the shortest path from vertex `start` to vertex `end` using Dijkstra's algorithm.
+  - `boolean isConnected()`: Checks if the graph is connected.
+  - `int connectedComponents()`: Returns the number of connected components in the graph (only for undirected graphs).
+  - `ArrayList<Integer> minimumSpanningTree()`: Computes the minimum spanning tree (MST) using Prim's algorithm and returns the vertices in the MST.
+  - `int getWeight(int from, int to)`: Returns the weight of the edge from vertex `from` to vertex `to`. If no such edge exists, returns `-1`.
+  - `Set<Graph.Vertex> vertices()`: Returns a set of all vertices in the graph.
 
-When you open VSCode with this project, you should get a notification in the
-bottom right corner that there are some recommended extensions to install.
-Click install all. If you ignored this message or it never came up, feel free
-to press CTRL+SHIFT+P and type "Show Recommended Extensions". Install all of the
-extensions listed.
+- **Internal Classes**:
+  - `Graph.Vertex`: Represents a vertex in the graph, storing its label and providing access to its neighbors.
+  - `Graph1L.Vertex`: A concrete implementation of `Graph.Vertex`, storing the vertex label and its adjacency list.
 
-### Step 3: Install the Latest JDK
+- **Additional Considerations**:
+  - **Mutability**: This component is mutable, as it allows adding and removing vertices and edges.
+  - **Internal Classes**: The component relies on internal classes such as `Vertex` to store vertex data and manage adjacency lists.
+  - **Enums or Constants**: The component uses constants to distinguish between directed and undirected graphs.
+  - **Secondary Methods Implementation**: Secondary methods are implemented using kernel methods. For example, `bfs` and `dfs` use the `getNeighbors` method to traverse the graph efficiently.
 
-If you do not have an available JDK on your system, you may be prompted to
-install one by VSCode. The default seems to be Red Hat's OpenJDK, which seems to
-require you to register for an account or to install on the command line.
-Regardless, there is no mac support. As a result, I would just recommend
-installing the latest JDK [directly from Oracle's site][jdk-downloads].
+- **Applications**:
+  - The `Graph` component has been successfully used in various demo projects:
+    - **SocialGraphDemo**: A social network analysis tool that allows users to create and analyze social graphs, recommend friends based on mutual connections, and modify the network dynamically.
+    - **Graph Automaton**: A demo that simulates state transitions in a finite state machine using graph structures.
+  - Other ideas:
+    - **Path Finder**: A tool to calculate the shortest path between locations in a graph-based map.
+    - **Course Dependency Manager**: A tool to manage and visualize course prerequisites, helping students plan their learning paths using topological sorting.
+    - **Network Reliability Analyzer**: A tool to analyze the reliability of a network by identifying critical nodes and edges (e.g., routers or connections) whose removal would disconnect the network.
+    - **Ecosystem Simulation**: A food web simulator where nodes represent species and edges represent predator-prey relationships, allowing users to analyze ecosystem stability.
+    - **Task Scheduler**: A project management tool that uses directed acyclic graphs (DAGs) to model task dependencies and compute the critical path for project completion.
+    - **Recommendation System**: A graph-based recommendation engine that suggests items (e.g., movies, products) based on user-item interactions and collaborative filtering.
+    - **Game Level Designer**: A tool to design game levels where nodes represent rooms or areas and edges represent connections between them, ensuring all areas are reachable.
+    - **Transportation Network Planner**: A tool to model and optimize transportation networks, such as roads, railways, or flight routes, using minimum spanning tree and shortest path algorithms.
 
-### Step 4: Add Key Libraries to Project
+## How to Use
 
-As you are probably all aware at this point, you need the components jar to get
-anything running. My advice is to [download it from here][components-jar]. Then,
-drop it into the `lib` folder in the project. Git automatically ignores anything
-you put here by default, so don't worry about committing it to version control.
+This section explains how to integrate and use the `Graph` component in other Java projects.
 
-Similarly, you will need the testing APIs (e.g., JUnit). Perhaps the easiest way
-to include them in your project is to click the beaker symbol in the left
-sidebar; it's right below the extensions button which looks like four squares.
-If you do not see this button, try creating a Java file in `src`. From there,
-you can click "Enable Java Tests" and then click "JUnit" from the
-dropdown. That's it! You should now see the two JUnit libraries in the lib
-folder.
+### 1. Clone or Download the Repository
 
-**Note**: if you're using VSCode for class projects, you might be wondering
-why you never had to do this. In general, it's bad practice to commit binaries
-to version control. However, we have no way of managing dependencies with the
-custom `components.jar`, so I included them directly in the template. I did not
-include them here, so you could see how it might be done from scratch. If at any
-point you're struggling with Step 3, just copy the lib folder from the monorepo
-template.
+First, clone or download this repository to your local machine:
 
-## Next Steps
+```bash
+git clone https://github.com/onetrue-6657/portfolio-osu-component.git
+```
 
-Now that you have everything setup, you can begin crafting your component. There
-will be deadlines for each step in Carmen, but you're free to complete each step
-as early as you'd like. To start, you'll want to visit the [doc](doc/) directory
-for each assignment file.
+### 2. Add Component to Your Project
 
-[components-jar]: https://cse22x1.engineering.osu.edu/common/components.jar
-[jdk-downloads]: https://www.oracle.com/java/technologies/downloads/
-[use-this-template]: https://github.com/new?template_name=portfolio-project&template_owner=jrg94
+#### Option 1: Copy the Component Source Files
+
+1. Navigate to the `src/components/graph` directory in this repository.
+2. Copy the `Graph.java` and `Graph1L.java` files into your project's src directory.
+3. Ensure the package structure matches your project's structure.
+
+#### Option 2: Add as a Library (JAR File)
+
+1. Compile the `Graph` component into a JAR file:
+
+    ```bash
+    javac -d out src/components/graph/*.java
+    jar cf graph-component.jar -C out .
+    ```
+
+2. Add the graph-component.jar file to your project's classpath:
+    - If using an IDE like IntelliJ IDEA or Eclipse, add the JAR file to your project's library dependencies.
+    - If using the command line, include the JAR file in the -cp option when compiling and running your project:
+
+    ```bash
+    javac -cp graph-component.jar YourProjectFile.java
+    java -cp graph-component.jar;. YourProjectFile
+    ```
+
+3. Import the Component
+
+    ```java
+    import components.graph.Graph;
+    import components.graph.Graph1L;
+    ```
+
+4. Requirements
+    - **Java Version**: Java 8 or higher.
+    - **Dependencies**: This component does not require any external libraries. You may need JUnit 4 if you want to run the test cases.
+
+[jrg94]: https://github.com/jrg94
+[CSE 2231 - Software II]: https://cse22x1.engineering.osu.edu/2231/web-sw2/index.html
+[OSU Component]: https://cse22x1.engineering.osu.edu/common/doc/
+[SoftwareComponents]: https://github.com/jrg94/SoftwareComponents?tab=readme-ov-file

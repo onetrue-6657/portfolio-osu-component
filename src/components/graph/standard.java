@@ -2,6 +2,8 @@ package components.graph;
 
 /**
  * {@code Standard} enhanced with secondary methods.
+ *
+ * @author Zheng Ni
  */
 public interface standard {
     /**
